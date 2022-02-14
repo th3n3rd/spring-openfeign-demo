@@ -1,6 +1,7 @@
 package com.example.consumer;
 
 import au.com.dius.pact.consumer.MockServer;
+import au.com.dius.pact.consumer.dsl.LambdaDsl;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static au.com.dius.pact.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -28,7 +30,11 @@ class ConsumerContractTests {
             .method("GET")
             .path("/greetings/Everybody")
             .willRespondWith()
-            .body("Hello Everybody! long time no see")
+            .body(
+                newJsonBody(body -> {
+                    body.stringType("greeting", "Hello Everybody! long time no see");
+                }).build()
+            )
             .toPact();
     }
 
@@ -37,8 +43,8 @@ class ConsumerContractTests {
     void greetSomebody(MockServer mockServer) {
         pactHelper.runClean(() -> {
             var client = createClient(mockServer);
-            var greeting = client.greet("Everybody");
-            assertThat(greeting).contains("Hello Everybody");
+            var response = client.greet("Everybody");
+            assertThat(response.getGreeting()).contains("Hello Everybody");
         });
     }
 

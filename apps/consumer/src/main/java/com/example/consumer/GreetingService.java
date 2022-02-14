@@ -12,6 +12,6 @@ class GreetingService {
     }
 
     String greet(String somebody) {
-        return providerClient.greet(somebody);
+        return providerClient.greet(somebody).getGreeting();
     }
 }
