@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+	implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-client-loadbalancer'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -57,4 +58,8 @@ pact {
 		pactBrokerUrl = 'http://localhost:9292'
 		tags = ['dev']
 	}
+}
+
+bootBuildImage {
+	imageName = "spring-openfeign-demo-${project.name}:${project.version}"
 }

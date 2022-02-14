@@ -50,3 +50,7 @@ pact {
 		pactBrokerUrl = 'http://localhost:9292'
 	}
 }
+
+bootBuildImage {
+	imageName = "spring-openfeign-demo-${project.name}:${project.version}"
+}
